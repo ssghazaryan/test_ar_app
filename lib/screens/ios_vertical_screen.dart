@@ -14,12 +14,12 @@ class _IosSceenState extends State<VerticalDetecting> {
   ARKitController arkitController;
   vector.Vector3 lastPosition;
   List nodeName = [];
-  double size = 0.5;
-  ARKitPlane plane;
+  double size = 0.1;
+  ARKitBox plane;
   ARKitNode node;
   String anchorId;
   List listofPlans = [];
-
+  vector.Vector3 position;
   @override
   void dispose() {
     arkitController?.dispose();
@@ -32,19 +32,26 @@ class _IosSceenState extends State<VerticalDetecting> {
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.clear),
+            icon: Icon(Icons.tv),
             onPressed: () {
               nodeName.forEach((element) {
                 arkitController.remove(element);
               });
 
+              position = null;
+              nodeName.clear();
+
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.clear),
+            onPressed: () {
+            
               listofPlans.forEach((element) {
                 arkitController.remove(element);
               });
               listofPlans.clear();
-              nodeName.clear();
 
-              onARKitViewCreated(arkitController);
             },
           )
         ],
@@ -54,8 +61,13 @@ class _IosSceenState extends State<VerticalDetecting> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 20,),
-          Text('Tv size: $size m',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'Tv size: $size m',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           SliderTheme(
               data: SliderTheme.of(context).copyWith(
                 activeTrackColor: Colors.blue[700],
@@ -77,11 +89,11 @@ class _IosSceenState extends State<VerticalDetecting> {
               ),
               child: Slider(
                 useV2Slider: true,
-                min: 0.5,
-                max: 5,
+                min: 0.1,
+                max: 2,
                 value: size,
                 divisions: 10,
-                label: '$size',
+                label: size.toStringAsFixed(2),
                 onChanged: (value) {
                   setState(() {
                     size = value;
@@ -94,6 +106,8 @@ class _IosSceenState extends State<VerticalDetecting> {
               planeDetection: ARPlaneDetection.vertical,
               onARKitViewCreated: onARKitViewCreated,
               showFeaturePoints: true,
+              enablePanRecognizer: true,
+              enableRotationRecognizer: true,
             ),
           ),
         ],
@@ -105,6 +119,8 @@ class _IosSceenState extends State<VerticalDetecting> {
     this.arkitController = arkitController;
     this.arkitController.onAddNodeForAnchor = _handleAddAnchor;
     this.arkitController.onUpdateNodeForAnchor = _handleUpdateAnchor;
+    this.arkitController.onNodePan = (pan) => _onPanHandler(pan);
+
     this.arkitController.onARTap = (ar) {
       final point = ar.firstWhere(
         (o) => o.type == ARKitHitTestResultType.existingPlaneUsingExtent,
@@ -114,6 +130,8 @@ class _IosSceenState extends State<VerticalDetecting> {
         _onARTapHandler(point);
       }
     };
+    this.arkitController.onNodeRotation =
+        (rotation) => _onRotationHandler(rotation);
   }
 
   void _handleAddAnchor(ARKitAnchor anchor) {
@@ -131,9 +149,10 @@ class _IosSceenState extends State<VerticalDetecting> {
     if (anchor.identifier != anchorId) {
       return;
     }
+    print('here');
     final ARKitPlaneAnchor planeAnchor = anchor;
     node.position.value = vector.Vector3(
-        planeAnchor.center.x, planeAnchor.center.y, planeAnchor.center.z);
+        planeAnchor.center.x, planeAnchor.center.y - 1, planeAnchor.center.z);
     plane.width.value = planeAnchor.extent.x;
     plane.height.value = planeAnchor.extent.z;
   }
@@ -141,9 +160,6 @@ class _IosSceenState extends State<VerticalDetecting> {
   void _addPlane(ARKitController controller, ARKitPlaneAnchor anchor) {
     if (listofPlans.isNotEmpty) return;
     anchorId = anchor.identifier;
-    // print('anchor.extent.x ${anchor.extent.x}');
-    // print('anchor.extent.y ${anchor.extent.y}');
-    // print('anchor.extent.z ${anchor.extent.z}');
 
     final material = ARKitMaterial(
       lightingModelName: ARKitLightingModel.lambert,
@@ -151,7 +167,7 @@ class _IosSceenState extends State<VerticalDetecting> {
           image:
               'https://lh3.googleusercontent.com/proxy/vv1b9RODvY_Y4SEW5xQ1J0xcd8lAX1mj2hwsOg8Cyc-mon96jeOGpFdwcvCIEBhd8hJUwniQaebzuEMe16NycWxr2uUoo4n2TwFMhyi2L6_kV7dKc-pCX7_PeQ'),
     );
-    plane = ARKitPlane(
+    plane = ARKitBox(
       width: anchor.extent.x,
       height: anchor.extent.z,
       materials: [
@@ -180,8 +196,9 @@ class _IosSceenState extends State<VerticalDetecting> {
       geometry: plane,
       position:
           vector.Vector3(anchor.center.x, anchor.center.y, anchor.center.z),
-      rotation: vector.Vector4(1, 0, 0, -math.pi / 2),
+      //   rotation: vector.Vector4(1, 0, 0, -math.pi / 2),
     );
+
     listofPlans.add(node.name);
     controller.add(node, parentNodeName: anchor.nodeName);
   }
@@ -190,14 +207,12 @@ class _IosSceenState extends State<VerticalDetecting> {
     nodeName.forEach((element) {
       arkitController.remove(element);
     });
-
-    print('object');
-
-    final position = vector.Vector3(
-      point.worldTransform.getColumn(3).x,
-      point.worldTransform.getColumn(3).y,
-      point.worldTransform.getColumn(3).z + 0.00000001,
-    );
+    if (position == null)
+      position = vector.Vector3(
+        point.worldTransform.getColumn(3).x,
+        point.worldTransform.getColumn(3).y,
+        point.worldTransform.getColumn(3).z,
+      );
 
     final material = ARKitMaterial(
       lightingModelName: ARKitLightingModel.lambert,
@@ -206,7 +221,7 @@ class _IosSceenState extends State<VerticalDetecting> {
               'https://www.ixbt.com/img/n1/news/2019/0/0/Samsung-TV_iTunes-Movies-and-TV-shows_large.jpg'),
     );
     final sphere = ARKitBox(
-        length: 0.000001, width: size, materials: [material], height: size / 2
+        length: 0.003, width: size, materials: [material], height: size / 2
         // radius: 0.1,
         );
 
@@ -214,6 +229,7 @@ class _IosSceenState extends State<VerticalDetecting> {
       geometry: sphere,
       position: position,
       eulerAngles: vector.Vector3.zero(),
+      rotation: vector.Vector4(0, 0, 0, 0),
     );
 
     arkitController.add(node);
@@ -232,5 +248,27 @@ class _IosSceenState extends State<VerticalDetecting> {
       // _drawText(distance, point);
     }
     // lastPosition = position;
+  }
+
+  void _onRotationHandler(List<ARKitNodeRotationResult> rotation) {
+    final rotationNode = rotation.firstWhere(
+      (e) => e.nodeName == node.name,
+      orElse: () => null,
+    );
+    if (rotationNode != null) {
+      final rotation =
+          node.rotation.value + vector.Vector4.all(rotationNode.rotation);
+      node.rotation.value = rotation;
+    }
+  }
+
+  void _onPanHandler(List<ARKitNodePanResult> pan) {
+    final panNode =
+        pan.firstWhere((e) => e.nodeName == node.name, orElse: null);
+    if (panNode != null) {
+      final old = node.eulerAngles.value;
+      final newAngleY = panNode.translation.x * math.pi / 180;
+      node.eulerAngles.value = vector.Vector3(old.x, newAngleY, old.z);
+    }
   }
 }

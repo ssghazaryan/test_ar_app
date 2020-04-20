@@ -18,9 +18,13 @@ class _HelloWorldState extends State<HelloWorld> {
         appBar: AppBar(
           title: const Text('Hello World'),
         ),
-        body: ArCoreView(
-          enableTapRecognizer: true,
-          onArCoreViewCreated: _onArCoreViewCreated,
+        body: Column(
+          children: [
+            ArCoreView(
+              enableTapRecognizer: true,
+              onArCoreViewCreated: _onArCoreViewCreated,
+            ),
+          ],
         ),
       ),
     );
