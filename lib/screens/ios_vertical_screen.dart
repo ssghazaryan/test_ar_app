@@ -117,11 +117,9 @@ class _IosSceenState extends State<VerticalDetecting> {
   }
 
   void onARKitViewCreated(ARKitController arkitController) {
-    this.arkitController = arkitController;
+   this.arkitController = arkitController;
     this.arkitController.onAddNodeForAnchor = _handleAddAnchor;
     this.arkitController.onUpdateNodeForAnchor = _handleUpdateAnchor;
-    this.arkitController.onNodePan = (pan) => _onPanHandler(pan);
-
     this.arkitController.onARTap = (ar) {
       final point = ar.firstWhere(
         (o) => o.type == ARKitHitTestResultType.featurePoint,
@@ -131,8 +129,6 @@ class _IosSceenState extends State<VerticalDetecting> {
         _onARTapHandler(point);
       }
     };
-    this.arkitController.onNodeRotation =
-        (rotation) => _onRotationHandler(rotation);
   }
 
   void _handleAddAnchor(ARKitAnchor anchor) {
@@ -247,11 +243,11 @@ class _IosSceenState extends State<VerticalDetecting> {
         // radius: 0.1,
         );
 
-    node = ARKitNode(
+   final node = ARKitNode(
       geometry: sphere,
       position: position,
       eulerAngles: vector.Vector3.zero(),
-      rotation: vector.Vector4(0, 0, 0, 0),
+     // rotation: vector.Vector4(0, 0, 0, 0),
     );
 
     arkitController.add(node);
