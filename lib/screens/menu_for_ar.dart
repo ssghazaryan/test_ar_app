@@ -1,3 +1,5 @@
+import 'package:ar_app/screens/android/adnroid_detect_horizonal.dart';
+import 'package:ar_app/screens/android/assets_objects.dart';
 import 'package:ar_app/screens/ios_custom_object.dart';
 import 'package:ar_app/screens/ios_detect_horizonal.dart';
 import 'package:ar_app/screens/ios_detect_image_ios.dart';
@@ -37,7 +39,7 @@ class MenuForAr extends StatelessWidget {
       ),
       body: Platform.isIOS
           ? Container(
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: EdgeInsets.all(8),
               child: ListView(
                 children: [
                   MenuItemWidget(
@@ -158,9 +160,25 @@ class MenuForAr extends StatelessWidget {
                 ],
               ),
             )
-          : ListView(
-              children: [],
-            ),
+          : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView(
+                children: [
+                     MenuItemWidget(
+                      title: 'Add simple objects at horizonal plan',
+                      secondTitle: 'sphere / cylinder / con',
+                      onPress: () =>
+                          openScreen(context, ArCoreHorizonalPlanWithObjects.pageRoute),
+                    ),
+                    // MenuItemWidget(
+                    //   title: 'Assets objects',
+                    //   secondTitle: 'sphere / cylinder / con',
+                    //   onPress: () =>
+                    //       openScreen(context, AndroidAssetsObject.pageRoute),
+                    // ),
+                ],
+              ),
+          ),
     );
   }
 }

@@ -1,5 +1,8 @@
 
 
+import 'package:ar_app/screens/android/adnroid_detect_horizonal.dart';
+import 'package:ar_app/screens/android/assets_objects.dart';
+
 import './screens/ios_custom_object.dart';
 import './screens/ios_detect_horizonal.dart';
 import './screens/ios_detect_image_ios.dart';
@@ -28,6 +31,8 @@ class MyApp extends StatelessWidget {
         HorizonalPlanWithObjects.pageRoute: (ctx) => HorizonalPlanWithObjects(),
         CustomObjectPage.pageRoute: (ctx) => CustomObjectPage(),
         VerticalDetecting.pageRoute: (ctx) => VerticalDetecting(),
+        ArCoreHorizonalPlanWithObjects.pageRoute: (ctx) => ArCoreHorizonalPlanWithObjects(),
+        AndroidAssetsObject.pageRoute: (ctx) => AndroidAssetsObject(),
       },
       // MyHomePage(title: 'Flutter Demo Home Page'),
     );
