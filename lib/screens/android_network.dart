@@ -1,6 +1,5 @@
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 
 class AutoDetectPlane extends StatefulWidget {
@@ -42,7 +41,7 @@ class _AutoDetectPlaneState extends State<AutoDetectPlane> {
   }
 
   Future _addSphere(ArCoreController controller, ArCorePlane plane) async {
-    final ByteData textureBytes = await rootBundle.load('assets/earth.jpg');
+    //final ByteData textureBytes = await rootBundle.load('assets/earth.jpg');
   print("\n\n\\n\n\n\\n\n\n\\n\n\n\n\n\n\n\\qwertyuiop[]\n\n\\n\n\n\\n\n\n\\n\n\n\n\n\n\n\\n");
     final material = ArCoreMaterial(color: Colors.deepOrange);
     final sphere = ArCoreSphere(

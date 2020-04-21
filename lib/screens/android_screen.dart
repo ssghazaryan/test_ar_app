@@ -90,40 +90,40 @@ class _HelloWorldState extends State<HelloWorld> {
     arCoreController.addArCoreNodeWithAnchor(earth);
   }
 
-  void _addSphere(ArCoreController controller) {
-    final material = ArCoreMaterial(color: Colors.deepOrange);
-    final sphere = ArCoreSphere(
-      materials: [material],
-      radius: 0.2,
-    );
-    final node = ArCoreNode(
-      shape: sphere,
-      position: vector.Vector3(0, 0, -1),
-    );
-    controller.addArCoreNode(node);
-  }
+  // void _addSphere(ArCoreController controller) {
+  //   final material = ArCoreMaterial(color: Colors.deepOrange);
+  //   final sphere = ArCoreSphere(
+  //     materials: [material],
+  //     radius: 0.2,
+  //   );
+  //   final node = ArCoreNode(
+  //     shape: sphere,
+  //     position: vector.Vector3(0, 0, -1),
+  //   );
+  //   controller.addArCoreNode(node);
+  // }
 
-  void _addCylindre(ArCoreController controller) {
-    final material = ArCoreMaterial(color: Colors.green);
-    final cylinder =
-        ArCoreCylinder(materials: [material], radius: 0.2, height: 0.3);
-    final node = ArCoreNode(
-      shape: cylinder,
-      position: vector.Vector3(0, -2.5, -3.0),
-    );
-    controller.addArCoreNode(node);
-  }
+  // void _addCylindre(ArCoreController controller) {
+  //   final material = ArCoreMaterial(color: Colors.green);
+  //   final cylinder =
+  //       ArCoreCylinder(materials: [material], radius: 0.2, height: 0.3);
+  //   final node = ArCoreNode(
+  //     shape: cylinder,
+  //     position: vector.Vector3(0, -2.5, -3.0),
+  //   );
+  //   controller.addArCoreNode(node);
+  // }
 
-  void _addCube(ArCoreController controller) {
-    final material = ArCoreMaterial(color: Colors.blue);
-    final cube =
-        ArCoreCube(materials: [material], size: vector.Vector3(1, 1, 1));
-    final node = ArCoreNode(
-      shape: cube,
-      position: vector.Vector3(-1, -1, -3.0),
-    );
-    controller.addArCoreNode(node);
-  }
+  // void _addCube(ArCoreController controller) {
+  //   final material = ArCoreMaterial(color: Colors.blue);
+  //   final cube =
+  //       ArCoreCube(materials: [material], size: vector.Vector3(1, 1, 1));
+  //   final node = ArCoreNode(
+  //     shape: cube,
+  //     position: vector.Vector3(-1, -1, -3.0),
+  //   );
+  //   controller.addArCoreNode(node);
+  // }
 
   @override
   void dispose() {

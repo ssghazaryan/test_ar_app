@@ -194,14 +194,14 @@ class _HorizonalPlanWithObjectsState extends State<HorizonalPlanWithObjects> {
     lastPosition = position;
   }
 
-  String _calculateDistanceBetweenPoints(vector.Vector3 A, vector.Vector3 B) {
-    final length = A.distanceTo(B);
-    return '${(length * 100).toStringAsFixed(2)} cm';
-  }
+  // String _calculateDistanceBetweenPoints(vector.Vector3 A, vector.Vector3 B) {
+  //   final length = A.distanceTo(B);
+  //   return '${(length * 100).toStringAsFixed(2)} cm';
+  // }
 
-  vector.Vector3 _getMiddleVector(vector.Vector3 A, vector.Vector3 B) {
-    return vector.Vector3((A.x + B.x) / 2, (A.y + B.y) / 2, (A.z + B.z) / 2);
-  }
+  // vector.Vector3 _getMiddleVector(vector.Vector3 A, vector.Vector3 B) {
+  //   return vector.Vector3((A.x + B.x) / 2, (A.y + B.y) / 2, (A.z + B.z) / 2);
+  // }
 
   List<ARKitMaterial> _createRandomColorMaterial() {
     return [
@@ -215,37 +215,37 @@ class _HorizonalPlanWithObjectsState extends State<HorizonalPlanWithObjects> {
     ];
   }
 
-  void _drawText(String text, vector.Vector3 point) {
-    final textGeometry = ARKitText(
-      text: text,
-      extrusionDepth: 1,
-      materials: [
-        ARKitMaterial(
-          diffuse: ARKitMaterialProperty(color: Colors.red),
-        )
-      ],
-    );
-    const scale = 0.001;
-    final vectorScale = vector.Vector3(scale, scale, scale);
-    final node = ARKitNode(
-      geometry: textGeometry,
-      position: point,
-      scale: vectorScale,
-    );
-    arkitController
-        .getNodeBoundingBox(node)
-        .then((List<vector.Vector3> result) {
-      final minVector = result[0];
-      final maxVector = result[1];
-      final dx = (maxVector.x - minVector.x) / 2 * scale;
-      final dy = (maxVector.y - minVector.y) / 2 * scale;
-      final position = vector.Vector3(
-        node.position.value.x - dx,
-        node.position.value.y - dy,
-        node.position.value.z,
-      );
-      node.position.value = position;
-    });
-    arkitController.add(node);
-  }
+  // void _drawText(String text, vector.Vector3 point) {
+  //   final textGeometry = ARKitText(
+  //     text: text,
+  //     extrusionDepth: 1,
+  //     materials: [
+  //       ARKitMaterial(
+  //         diffuse: ARKitMaterialProperty(color: Colors.red),
+  //       )
+  //     ],
+  //   );
+  //   const scale = 0.001;
+  //   final vectorScale = vector.Vector3(scale, scale, scale);
+  //   final node = ARKitNode(
+  //     geometry: textGeometry,
+  //     position: point,
+  //     scale: vectorScale,
+  //   );
+  //   arkitController
+  //       .getNodeBoundingBox(node)
+  //       .then((List<vector.Vector3> result) {
+  //     final minVector = result[0];
+  //     final maxVector = result[1];
+  //     final dx = (maxVector.x - minVector.x) / 2 * scale;
+  //     final dy = (maxVector.y - minVector.y) / 2 * scale;
+  //     final position = vector.Vector3(
+  //       node.position.value.x - dx,
+  //       node.position.value.y - dy,
+  //       node.position.value.z,
+  //     );
+  //     node.position.value = position;
+  //   });
+  //   arkitController.add(node);
+  // }
 }

@@ -147,34 +147,34 @@ class _IosSceenState extends State<AddSimpleObjectStcreen> {
     arkitController.remove(name);
   }
 
-  void _handleOnPlaneTap(List<ARKitTestResult> hits) {
-    print('\n\n\n\n\n////////////');
+  // void _handleOnPlaneTap(List<ARKitTestResult> hits) {
+  //   print('\n\n\n\n\n////////////');
 
-    print('here');
-    final hit = hits.first;
-    print(hit.localTransform);
-    print('////////////');
-    print(hit.worldTransform);
-    print('////////////');
+  //   print('here');
+  //   final hit = hits.first;
+  //   print(hit.localTransform);
+  //   print('////////////');
+  //   print(hit.worldTransform);
+  //   print('////////////');
 
-    print(hit.type);
-    print('////////////');
+  //   print(hit.type);
+  //   print('////////////');
 
-    print(hit.distance);
+  //   print(hit.distance);
 
-    print('////////////');
-    print('////////////\n\n\n\n\n');
+  //   print('////////////');
+  //   print('////////////\n\n\n\n\n');
 
-    final node = ARKitNode(
-      geometry: ARKitSphere(radius: 0.1),
-      position: vector.Vector3(
-        0,
-        0,
-        -0.5,
-      ),
-    );
-    this.arkitController.add(node);
-  }
+  //   final node = ARKitNode(
+  //     geometry: ARKitSphere(radius: 0.1),
+  //     position: vector.Vector3(
+  //       0,
+  //       0,
+  //       -0.5,
+  //     ),
+  //   );
+  //   this.arkitController.add(node);
+  // }
 
   void _onARTapHandler(ARKitTestResult point) {
     var temoNode;
@@ -239,32 +239,32 @@ class _IosSceenState extends State<AddSimpleObjectStcreen> {
     ];
   }
 
-  String _calculateDistanceBetweenPoints(vector.Vector3 A, vector.Vector3 B) {
-    final length = A.distanceTo(B);
-    return '${(length * 100).toStringAsFixed(2)} cm';
-  }
+  // String _calculateDistanceBetweenPoints(vector.Vector3 A, vector.Vector3 B) {
+  //   final length = A.distanceTo(B);
+  //   return '${(length * 100).toStringAsFixed(2)} cm';
+  // }
 
-  vector.Vector3 _getMiddleVector(vector.Vector3 A, vector.Vector3 B) {
-    return vector.Vector3((A.x + B.x) / 2, (A.y + B.y) / 2, (A.z + B.z) / 2);
-  }
+  // vector.Vector3 _getMiddleVector(vector.Vector3 A, vector.Vector3 B) {
+  //   return vector.Vector3((A.x + B.x) / 2, (A.y + B.y) / 2, (A.z + B.z) / 2);
+  // }
 
-  void _drawText(String text, vector.Vector3 point) {
-    final textGeometry = ARKitText(
-      text: text,
-      extrusionDepth: 1,
-      materials: [
-        ARKitMaterial(
-          diffuse: ARKitMaterialProperty(color: Colors.red),
-        )
-      ],
-    );
-    const scale = 0.001;
-    final vectorScale = vector.Vector3(scale, scale, scale);
-    final node = ARKitNode(
-      geometry: textGeometry,
-      position: point,
-      scale: vectorScale,
-    );
-    arkitController.add(node);
-  }
+  // void _drawText(String text, vector.Vector3 point) {
+  //   final textGeometry = ARKitText(
+  //     text: text,
+  //     extrusionDepth: 1,
+  //     materials: [
+  //       ARKitMaterial(
+  //         diffuse: ARKitMaterialProperty(color: Colors.red),
+  //       )
+  //     ],
+  //   );
+  //   const scale = 0.001;
+  //   final vectorScale = vector.Vector3(scale, scale, scale);
+  //   final node = ARKitNode(
+  //     geometry: textGeometry,
+  //     position: point,
+  //     scale: vectorScale,
+  //   );
+  //   arkitController.add(node);
+  // }
 }

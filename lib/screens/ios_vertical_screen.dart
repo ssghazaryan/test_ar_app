@@ -11,11 +11,12 @@ class VerticalDetecting extends StatefulWidget {
 }
 
 class _IosSceenState extends State<VerticalDetecting> {
+  
   ARKitController arkitController;
   vector.Vector3 lastPosition;
   List nodeName = [];
   double size = 0.1;
-  ARKitBox plane;
+  ARKitPlane plane;
   ARKitNode node;
   String anchorId;
   List listofPlans = [];
@@ -123,7 +124,7 @@ class _IosSceenState extends State<VerticalDetecting> {
 
     this.arkitController.onARTap = (ar) {
       final point = ar.firstWhere(
-        (o) => o.type == ARKitHitTestResultType.existingPlaneUsingExtent,
+        (o) => o.type == ARKitHitTestResultType.featurePoint,
         orElse: () => null,
       );
       if (point != null) {
@@ -142,14 +143,9 @@ class _IosSceenState extends State<VerticalDetecting> {
   }
 
   void _handleUpdateAnchor(ARKitAnchor anchor) {
-    if (listofPlans.isEmpty) {
-      _addPlane(arkitController, anchor);
-      return;
-    }
     if (anchor.identifier != anchorId) {
       return;
     }
-    print('here');
     final ARKitPlaneAnchor planeAnchor = anchor;
     node.position.value = vector.Vector3(
         planeAnchor.center.x, planeAnchor.center.y - 1, planeAnchor.center.z);
@@ -158,26 +154,41 @@ class _IosSceenState extends State<VerticalDetecting> {
   }
 
   void _addPlane(ARKitController controller, ARKitPlaneAnchor anchor) {
-    if (listofPlans.isNotEmpty) return;
-    anchorId = anchor.identifier;
-
-    final material = ARKitMaterial(
-      lightingModelName: ARKitLightingModel.lambert,
-      diffuse: ARKitMaterialProperty(
-          image:
-              'https://lh3.googleusercontent.com/proxy/vv1b9RODvY_Y4SEW5xQ1J0xcd8lAX1mj2hwsOg8Cyc-mon96jeOGpFdwcvCIEBhd8hJUwniQaebzuEMe16NycWxr2uUoo4n2TwFMhyi2L6_kV7dKc-pCX7_PeQ'),
-    );
-    plane = ARKitBox(
+     anchorId = anchor.identifier;
+    plane = ARKitPlane(
       width: anchor.extent.x,
       height: anchor.extent.z,
-      materials: [
-        // material
-        ARKitMaterial(
+      materials: [   ARKitMaterial(
           transparency: 0.5,
           diffuse: ARKitMaterialProperty(color: Colors.white),
-        )
-      ],
+        )],
     );
+
+    node = ARKitNode(
+      geometry: plane,
+      renderingOrder: -1,
+      position: vector.Vector3(anchor.center.x, 0, anchor.center.z),
+      rotation: vector.Vector4(1, 0, 0, -math.pi / 2),
+    );
+    controller.add(node, parentNodeName: anchor.nodeName);
+
+    // final material = ARKitMaterial(
+    //   lightingModelName: ARKitLightingModel.lambert,
+    //   diffuse: ARKitMaterialProperty(
+    //       image:
+    //           'https://lh3.googleusercontent.com/proxy/vv1b9RODvY_Y4SEW5xQ1J0xcd8lAX1mj2hwsOg8Cyc-mon96jeOGpFdwcvCIEBhd8hJUwniQaebzuEMe16NycWxr2uUoo4n2TwFMhyi2L6_kV7dKc-pCX7_PeQ'),
+    // );
+    // plane = ARKitBox(
+    //   width: anchor.extent.x,
+    //   height: anchor.extent.z,
+    //   materials: [
+    //     // material
+    //     ARKitMaterial(
+    //       transparency: 0.5,
+    //       diffuse: ARKitMaterialProperty(color: Colors.white),
+    //     )
+    //   ],
+    // );
 
     //  final material = ARKitMaterial(
     //     lightingModelName: ARKitLightingModel.lambert,
@@ -192,15 +203,26 @@ class _IosSceenState extends State<VerticalDetecting> {
     //     height: 0.15
     //     // radius: 0.1,
     //   );
-    node = ARKitNode(
-      geometry: plane,
-      position:
-          vector.Vector3(anchor.center.x, anchor.center.y, anchor.center.z),
-      //   rotation: vector.Vector4(1, 0, 0, -math.pi / 2),
-    );
+    // plane = ARKitPlane(
+    //   width: anchor.extent.x,
+    //   height: anchor.extent.z,
+    //   materials: [
+    //         // material
+    //     ARKitMaterial(
+    //       transparency: 0.5,
+    //       diffuse: ARKitMaterialProperty(color: Colors.white),
+    //     )
+    //   ],
+    // );
+    // node = ARKitNode(
+    //   geometry: plane,
+    //   position:
+    //       vector.Vector3(anchor.center.x, anchor.center.y, anchor.center.z),
+    //      rotation: vector.Vector4(1, 0, 0, -math.pi / 2),
+    // );
 
-    listofPlans.add(node.name);
-    controller.add(node, parentNodeName: anchor.nodeName);
+     listofPlans.add(node.name);
+    // controller.add(node, parentNodeName: anchor.nodeName);
   }
 
   void _onARTapHandler(ARKitTestResult point) {
@@ -272,3 +294,5 @@ class _IosSceenState extends State<VerticalDetecting> {
     }
   }
 }
+
+

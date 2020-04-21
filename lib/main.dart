@@ -1,3 +1,5 @@
+
+
 import './screens/ios_custom_object.dart';
 import './screens/ios_detect_horizonal.dart';
 import './screens/ios_detect_image_ios.dart';
@@ -26,7 +28,6 @@ class MyApp extends StatelessWidget {
         HorizonalPlanWithObjects.pageRoute: (ctx) => HorizonalPlanWithObjects(),
         CustomObjectPage.pageRoute: (ctx) => CustomObjectPage(),
         VerticalDetecting.pageRoute: (ctx) => VerticalDetecting(),
-        
       },
       // MyHomePage(title: 'Flutter Demo Home Page'),
     );
